@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title_head %}
+    <title>Lista de Libros</title>
+{% endblock title_head %}
+
+{% block h1_header %}
+    Lista de Libros
+{% endblock h1_header %}
+
+{% block main %}
+    <ul>
+        {% for libro in libros %}
+            <li>
+                <strong>{{ libro.titulo }}</strong><br>
+                Autor: {{ libro.autor }}<br>
+                Editorial: {{ libro.editorial }}<br>
+                Fecha de Publicación: {{ libro.fecha_de_publicacion }}<br>
+                Descripción: {{ libro.descripcion }}<br>
+                Número de Páginas: {{ libro.hojas }}<br>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock main %}
