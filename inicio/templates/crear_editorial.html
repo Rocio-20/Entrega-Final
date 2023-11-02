@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title_head %}
+    <title>Crear Editorial</title>
+{% endblock title_head %}
+
+{% block h1_header %}
+    Crear Editorial
+{% endblock h1_header %}
+
+{% block main %}
+    <form method="post">
+    {% csrf_token %}
+    {{form.as_p}}
+    <button type="submit">Crear</button>
+    </form>
+    {% if listado_editoriales %}
+<ul>
+    {% for edit in listado_editoriales %}
+ <li>{{edit.nombre}}</li>
+ <p><a href="{{ edit.website }}" target="_blank">{{ edit.website }}</a></p>
+    {% endfor %}
+</ul>
+{% else %}
+<p>No se encontraron editoriles</p>
+{% endif %}
+{% endblock main %}
