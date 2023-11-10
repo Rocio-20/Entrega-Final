@@ -22,11 +22,22 @@
         <!-- Navigation-->
         <nav class="navbar navbar-light bg-light static-top">
             <div class="container">
-                <a class="navbar-brand" href={% url "inicio" %}>Biblioteca</a>
+                <a class="navbar-brand" href={% url "inicio" %}>Inicio</a>
                 <a class="navbar-brand" href={% url "autores" %}>Autores</a>
                 <a class="navbar-brand" href={% url "crear_editorial" %}>Editoriales</a>
-                <a class="navbar-brand" href={% url "crear_libro" %}>Registrar Libros</a>
+                <a class="navbar-brand" href={% url "libros" %}>Libros</a>
+                {% if not user.is_authenticated %}
+            <!-- Mostrar el enlace de Registro solo si el usuario no está autenticado -->
+                    <a class="navbar-brand" href="{% url 'registro' %}">Registrarse</a>
+                {% endif %}
               <!--  <a class="btn btn-primary" href="#signup">Sign Up</a>-->
+                {% if user.is_authenticated %}
+                   <span class="naxbar-text">
+                      Hola, {{user.username}} (<a href="{% url 'logout' %}">Salir</a>)
+                   </span>
+                {% else %}
+                   <a class="navbar-brand" href="{% url 'login' %}">Ingresar</a>
+                {% endif %}
             </div>
         </nav>
         <!-- Masthead-->

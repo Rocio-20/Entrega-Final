@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block h1_header %}
+Libros
+{% endblock h1_header %}
+{% block title_head %}
+<title>Libros</title>
+{% endblock title_head %}
+
+{% block main %}
+    <ul>
+        <li><a href="{% url 'crear_libro' %}">Crear Libro</a></li>
+        <li><a href="{% url 'buscar_libros' %}">Buscar Libros</a></li>
+    </ul>
+{% endblock main %}

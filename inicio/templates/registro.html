@@ -1,0 +1,17 @@
+<!-- registro.html -->
+{% extends "base.html" %}
+{% block title_head %}
+    <title>Registro</title>
+{% endblock title_head %}
+
+{% block h1_header %}
+    Registro
+{% endblock h1_header %}
+
+{% block main %}
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Registrarse</button>
+    </form>
+{% endblock main %}

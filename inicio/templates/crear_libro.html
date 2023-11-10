@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 {% block title_head %}
     <title>Registrar Libro</title>
 {% endblock title_head %}
@@ -8,9 +9,60 @@
 {% endblock h1_header %}
 
 {% block main %}
-    <form method="post">
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-success" role="alert">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+    <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        {{ form.as_p }}
+        
+        <div>
+            {{ form.titulo.label_tag }}
+            {{ form.titulo }}
+        </div>
+
+        <div>
+            {{ form.autor.label_tag }}
+            {{ form.autor }}
+            {{ form.autor.errors }}
+        </div>
+
+        <div>
+            {{ form.editorial.label_tag }}
+            {{ form.editorial }}
+            {{ form.editorial.errors }}
+        </div>
+
+        <div>
+            {{ form.anio_de_publicacion.label_tag }}
+            {{ form.anio_de_publicacion }}
+            {{ form.anio_de_publicacion.errors }}
+        </div>
+
+        <div>
+            {{ form.hojas.label_tag }}
+            {{ form.hojas }}
+            {{ form.hojas.errors }}
+        </div>
+
+        <div>
+            {{ form.descripcion.label_tag }}
+            {{ form.descripcion }}
+            {{ form.descripcion.errors }}
+        </div>
+
+        <div>
+            {{ form.portada.label_tag }}
+            {{ form.portada }}
+            {{ form.portada.errors }}
+        </div>
+
+        <br>
         <button type="submit">Crear Libro</button>
     </form>
+
+    {{ form.media }}
 {% endblock main %}

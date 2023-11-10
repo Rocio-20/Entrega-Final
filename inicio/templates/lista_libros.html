@@ -14,9 +14,10 @@
                 <strong>{{ libro.titulo }}</strong><br>
                 Autor: {{ libro.autor }}<br>
                 Editorial: {{ libro.editorial }}<br>
-                Fecha de Publicación: {{ libro.fecha_de_publicacion }}<br>
-                Descripción: {{ libro.descripcion }}<br>
+                Fecha de Publicación: {{ libro.anio_de_publicacion }}<br>
+                Descripción: {{ libro.descripcion|safe}}
                 Número de Páginas: {{ libro.hojas }}<br>
+                Portada: <img src="{{ libro.portada.url }}" alt="{{ libro.titulo }} Portada"> <br>
             </li>
         {% endfor %}
     </ul>

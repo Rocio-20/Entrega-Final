@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title_head %}
+    <title>Lista de Libros</title>
+{% endblock title_head %}
+
+{% block h1_header %}
+    Lista de Libros
+{% endblock h1_header %}
+
+{% block main %}
+    <form action="">
+      {% csrf_token %}
+      {{formulario}}
+      <input type="submit" value="Buscar">
+    </form>
+    {% if lista_libros %}
+        <h2>Resultados de la Búsqueda:</h2>
+        <ul>
+            {% for libro in lista_libros %}
+             <li>
+                <strong>{{ libro.titulo }}</strong><br>
+                Autor: {{ libro.autor }}<br>
+                Editorial: {{ libro.editorial }}<br>
+             </li>
+            {% endfor %}
+        </ul>
+     {% else %}
+        <p>No se encontraron autores</p>
+    {% endif %}
+    <a href="{% url 'libros' %}">Volver</a>
+    
+{% endblock main %}

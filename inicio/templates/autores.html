@@ -7,22 +7,23 @@
 Autores
 {% endblock h1_header %}
 {% block main %}
-<p>
-    <a href={% url "crear_autores" %}>Crear Autor</a>
-</p>
-<form action="">
+  <form action="">
     {% csrf_token %}
     {{formulario}}
     <input type="submit" value="Buscar">
-</form>
-{% if listado_autores %}
+  </form>
+  {% if listado_autores %}
+        <h2>Resultados de la Búsqueda:</h2>
         <ul>
             {% for autor in listado_autores %}
                 <li>{{ autor.nombre }} - {{ autor.nacionalidad }}</li>
             {% endfor %}
         </ul>
     {% else %}
-<p>No se encontraron autores</p>
-{% endif %}
+        <p>No se encontraron autores</p>
+  {% endif %}
+  <p>
+    <a href={% url "crear_autores" %}>Crear Autor</a>
+  </p>
 {% endblock main %}
 

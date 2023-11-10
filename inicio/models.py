@@ -1,7 +1,8 @@
 from django.db import models
+from ckeditor.fields import RichTextField
 
 # Create your models here.
-from django.db import models
+
 
 class Autor(models.Model):
     nombre = models.CharField(max_length=30)
@@ -19,9 +20,12 @@ class Libro(models.Model):
     titulo = models.CharField(max_length=200)
     autor = models.ForeignKey(Autor, on_delete=models.CASCADE)
     editorial = models.ForeignKey(Editorial, on_delete=models.CASCADE)
-    año_de_publicacion = models.IntegerField()
-    descripcion = models.TextField()
-    hojas = models.IntegerField()
+    anio_de_publicacion = models.DateField()
+    hojas = models.IntegerField()   
+    descripcion = RichTextField()
+    portada = models.ImageField(upload_to='imagenes_libros/', null=True)
+
+    
     def __str__(self):
-      return f'{self.id} - {self.titulo} - {self.autor}'
+      return self.titulo
     

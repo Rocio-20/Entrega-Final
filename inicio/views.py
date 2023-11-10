@@ -1,9 +1,12 @@
-from django.shortcuts import render
-
-# Create your views here.
+from django.contrib.auth import login
+from .forms import RegistroFormulario
 from django.shortcuts import render, redirect
 from inicio.models import Autor, Editorial, Libro
-from inicio.forms import CrearAutorFormulario, BusquedaAutorFormulario, CrearEditorialFormulario, CrearLibroFormulario
+from django.contrib import messages
+from inicio.forms import CrearAutorFormulario, BusquedaAutorFormulario, CrearEditorialFormulario, CrearLibroFormulario, BusquedaLibro
+from django.shortcuts import render
+from PIL import Image
+from io import BytesIO
 
 def inicio(request):
   return render(request, 'inicio.html', {})
@@ -55,19 +58,63 @@ def crear_editorial(request):
     listado_editoriales = Editorial.objects.all()
     return render(request, 'crear_editorial.html', {'form': form, 'listado_editoriales': listado_editoriales})
 
-      
+def libro(request):
+    return render(request, 'libros.html', {})
+
+def buscar_libros(request):
+    lista_libros = None
+    if request.method == 'GET':
+        formulario = BusquedaLibro(request.GET)
+        if formulario.is_valid():
+            titulo_a_buscar = formulario.cleaned_data.get('nombre')
+            if titulo_a_buscar:
+                lista_libros = Libro.objects.filter(titulo__icontains=titulo_a_buscar)
+            else:
+                # Si el título a buscar es None, podrías querer mostrar todos los libros
+                lista_libros = Libro.objects.all()
+
+    else:
+        formulario = BusquedaLibro()
+
+    return render(request, 'buscar_libros.html', {'lista_libros': lista_libros, 'formulario': formulario})
+
 def crear_libro(request):
     if request.method == 'POST':
-        form = CrearLibroFormulario(request.POST)
+        form = CrearLibroFormulario(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
+            libro = form.save()
+            # Procesa la imagen antes de guardarla
+            if libro.portada:
+                img = Image.open(libro.portada.path)
+                img.thumbnail((300, 300))  # Ajusta el tamaño según tus necesidades
+                img.save(libro.portada.path)
+
+            libro.save()
+            # Mensaje de creación exitosa
+            messages.success(request, 'El libro se creó con éxito.')
+            # Restablecer los valores del formulario
+            form = CrearLibroFormulario()
             return redirect('lista_libros')
+        else:
+            messages.error(request, 'Error en el formulario. Por favor, verifica los campos.')
     else:
         form = CrearLibroFormulario()
+    
+    print(form.errors)
     return render(request, 'crear_libro.html', {'form': form})
 
 def lista_libros(request):
     libros = Libro.objects.all()
     return render(request, 'lista_libros.html', {'libros': libros})
 
+def registro(request):
+    if request.method == 'POST':
+        form = RegistroFormulario(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect('inicio')
+    else:
+        form = RegistroFormulario()
 
+    return render(request, 'registro.html', {'form': form})
