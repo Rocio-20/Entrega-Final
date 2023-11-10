@@ -21,6 +21,7 @@
                 <strong>{{ libro.titulo }}</strong><br>
                 Autor: {{ libro.autor }}<br>
                 Editorial: {{ libro.editorial }}<br>
+                <a href="{% url 'editar_libro' libro.id %}">Editar</a>
              </li>
             {% endfor %}
         </ul>

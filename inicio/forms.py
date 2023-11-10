@@ -34,7 +34,14 @@ class BusquedaAutorFormulario(forms.Form):
 
 class BusquedaLibro(forms.Form):
     nombre = forms.CharField(max_length=30, required=False)
-    
+
+class EditarLibroFormulario(forms.ModelForm):
+    descripcion = RichTextField(blank=True)
+
+    class Meta:
+        model = Libro
+        fields = ['titulo', 'autor', 'editorial', 'anio_de_publicacion', 'hojas', 'descripcion', 'portada']
+
 class RegistroFormulario(UserCreationForm):
     class Meta:
         model = User

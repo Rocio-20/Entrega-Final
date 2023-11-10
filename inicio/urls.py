@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path
-from inicio.views import inicio, autores, crear_autor, crear_editorial, crear_libro, buscar_libros, registro, libro, lista_libros
+from inicio.views import inicio, autores, crear_autor, crear_editorial, crear_libro, buscar_libros, registro, libro, lista_libros, editar_libro
 from django.contrib.auth.views import LoginView, LogoutView
 
 urlpatterns = [
@@ -16,6 +16,7 @@ urlpatterns = [
     path('login/', LoginView.as_view(), name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),
     path('registro/', registro, name='registro'),
+    path('libros/editar/<int:libro_id>/', editar_libro, name='editar_libro'),
 ]
 
 if settings.DEBUG:

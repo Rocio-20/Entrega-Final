@@ -1,0 +1,60 @@
+<!-- editar_libro.html -->
+
+{% extends "base.html" %}
+{% block title_head %}
+    <title>Editar Libro</title>
+{% endblock title_head %}
+
+{% block h1_header %}
+    Editar Libro
+{% endblock h1_header %}
+
+{% block main %}
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <div>
+            {{ formulario.titulo.label_tag }}
+            {{ formulario.titulo }}
+        </div>
+
+        <div>
+            {{ formulario.autor.label_tag }}
+            {{ formulario.autor }}
+            {{ formulario.autor.errors }}
+        </div>
+
+        <div>
+            {{ formulario.editorial.label_tag }}
+            {{ formulario.editorial }}
+            {{ formulario.editorial.errors }}
+        </div>
+
+        <div>
+            {{ formulario.anio_de_publicacion.label_tag }}
+            {{ formulario.anio_de_publicacion }}
+            {{ formulario.anio_de_publicacion.errors }}
+        </div>
+
+        <div>
+            {{ formulario.hojas.label_tag }}
+            {{ formulario.hojas }}
+            {{ formulario.hojas.errors }}
+        </div>
+
+        <div>
+            {{ formulario.descripcion.label_tag }}
+            {{ formulario.descripcion }}
+            {{ formulario.descripcion.errors }}
+        </div>
+
+        <div>
+            {{ formulario.portada.label_tag }}
+            {{ formulario.portada }}
+            {{ formulario.portada.errors }}
+        </div>
+
+        <br>
+        <button type="submit">Guardar Cambios</button>
+    </form>
+{% endblock main %}

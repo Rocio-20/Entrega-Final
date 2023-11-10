@@ -1,9 +1,9 @@
 from django.contrib.auth import login
 from .forms import RegistroFormulario
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from inicio.models import Autor, Editorial, Libro
 from django.contrib import messages
-from inicio.forms import CrearAutorFormulario, BusquedaAutorFormulario, CrearEditorialFormulario, CrearLibroFormulario, BusquedaLibro
+from inicio.forms import CrearAutorFormulario, BusquedaAutorFormulario, CrearEditorialFormulario, CrearLibroFormulario, BusquedaLibro, EditarLibroFormulario
 from django.shortcuts import render
 from PIL import Image
 from io import BytesIO
@@ -102,6 +102,19 @@ def crear_libro(request):
     
     print(form.errors)
     return render(request, 'crear_libro.html', {'form': form})
+
+def editar_libro(request, libro_id):
+    libro = get_object_or_404(Libro, id=libro_id)
+
+    if request.method == 'POST':
+        formulario = EditarLibroFormulario(request.POST, request.FILES, instance=libro)
+        if formulario.is_valid():
+            formulario.save()
+            return redirect('lista_libros')
+    else:
+        formulario = EditarLibroFormulario(instance=libro)
+
+    return render(request, 'editar_libro.html', {'formulario': formulario, 'libro': libro})
 
 def lista_libros(request):
     libros = Libro.objects.all()
