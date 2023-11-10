@@ -1,12 +1,9 @@
-from django.contrib.auth import login
-from .forms import RegistroFormulario
 from django.shortcuts import render, redirect, get_object_or_404
 from inicio.models import Autor, Editorial, Libro
 from django.contrib import messages
 from inicio.forms import CrearAutorFormulario, BusquedaAutorFormulario, CrearEditorialFormulario, CrearLibroFormulario, BusquedaLibro, EditarLibroFormulario
 from django.shortcuts import render
 from PIL import Image
-from io import BytesIO
 
 def inicio(request):
   return render(request, 'inicio.html', {})
@@ -129,14 +126,4 @@ def lista_libros(request):
     libros = Libro.objects.all()
     return render(request, 'lista_libros.html', {'libros': libros})
 
-def registro(request):
-    if request.method == 'POST':
-        form = RegistroFormulario(request.POST)
-        if form.is_valid():
-            user = form.save()
-            login(request, user)
-            return redirect('inicio')
-    else:
-        form = RegistroFormulario()
 
-    return render(request, 'registro.html', {'form': form})

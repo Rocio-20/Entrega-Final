@@ -26,17 +26,22 @@
                 <a class="navbar-brand" href={% url "autores" %}>Autores</a>
                 <a class="navbar-brand" href={% url "crear_editorial" %}>Editoriales</a>
                 <a class="navbar-brand" href={% url "libros" %}>Libros</a>
-                {% if not user.is_authenticated %}
-            <!-- Mostrar el enlace de Registro solo si el usuario no está autenticado -->
-                    <a class="navbar-brand" href="{% url 'registro' %}">Registrarse</a>
-                {% endif %}
-              <!--  <a class="btn btn-primary" href="#signup">Sign Up</a>-->
                 {% if user.is_authenticated %}
-                   <span class="naxbar-text">
-                      Hola, {{user.username}} (<a href="{% url 'logout' %}">Salir</a>)
-                   </span>
+                    <div class="dropdown">
+                        <a class="dropdown-toggle" href="#" role="button" id="navbarDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Hola, {{ user.username }}
+                            {% if user.avatar %}
+                                <img src="{{ user.avatar.url }}" alt="Avatar de {{ user.username }}" style="max-width: 30px; max-height: 30px; border-radius: 50%;">
+                            {% endif %}
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="{% url 'perfil' %}">Perfil</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="{% url 'logout' %}">Salir</a>
+                        </div>
+                    </div>
                 {% else %}
-                   <a class="navbar-brand" href="{% url 'login' %}">Ingresar</a>
+                    <a class="navbar-brand" href="{% url 'login' %}">Ingresar</a>
                 {% endif %}
             </div>
         </nav>

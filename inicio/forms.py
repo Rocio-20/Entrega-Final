@@ -1,7 +1,5 @@
 from django import forms
-from .models import Libro, Autor, Editorial
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import User
+from inicio.models import Libro, Autor, Editorial
 from ckeditor.fields import RichTextField
 
 class CrearAutorFormulario(forms.Form):
@@ -42,8 +40,5 @@ class EditarLibroFormulario(forms.ModelForm):
         model = Libro
         fields = ['titulo', 'autor', 'editorial', 'anio_de_publicacion', 'hojas', 'descripcion', 'portada']
 
-class RegistroFormulario(UserCreationForm):
-    class Meta:
-        model = User
-        fields = ['username', 'password1', 'password2']
+
 

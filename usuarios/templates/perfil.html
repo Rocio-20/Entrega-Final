@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title_head %}
+    <title>Perfil de {{ usuario.username }}</title>
+{% endblock title_head %}
+
+{% block h1_header %}
+    Perfil de {{ usuario.username }}
+{% endblock h1_header %}
+
+{% block main %}
+    <p>Nombre: {{ usuario.nombre }}</p>
+    <p>Apellido: {{ usuario.apellido }}</p>
+    <p>Email: {{ usuario.email }}</p>
+    <p>Fecha de Cumpleaños: {{ usuario.fecha_de_cumpleanios }}</p>
+    <p>Biografía: {{ usuario.biografia }}</p>
+    
+    <ul><a href="{% url 'editar_perfil' %}">Editar</a></ul>
+{% endblock main %}
+

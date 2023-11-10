@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'inicio',
     'ckeditor',
-    'ckeditor_uploader'
+    'ckeditor_uploader',
+    'usuarios',
 ]
 CKEDITOR_JQUERY_URL = 'https://code.jquery.com/jquery-3.6.0.min.js'  # Puedes usar tu propia URL de jQuery si prefieres
 CKEDITOR_UPLOAD_PATH = 'uploads/'
@@ -93,6 +94,7 @@ DATABASES = {
     }
 }
 
+AUTH_USER_MODEL = 'usuarios.Usuario'
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
