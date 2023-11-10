@@ -1,0 +1,21 @@
+<!-- eliminar_libro.html -->
+
+{% extends "base.html" %}
+{% block title_head %}
+    <title>Eliminar Libro</title>
+{% endblock title_head %}
+
+{% block h1_header %}
+    Eliminar Libro
+{% endblock h1_header %}
+
+{% block main %}
+    <p>¿Estás seguro de que deseas eliminar el libro "{{ libro.titulo }}"?</p>
+    
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Sí, eliminar</button>
+    </form>
+
+    <a href="{% url 'lista_libros' %}">Cancelar</a>
+{% endblock main %}

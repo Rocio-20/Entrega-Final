@@ -1,5 +1,8 @@
 from django.contrib import admin
-from inicio.models import Autor
+from inicio.models import Autor, Libro, Editorial
 
-admin.site.register(Autor)
+
 # Register your models here.
+admin.site.register(Autor)
+admin.site.register(Libro)
+admin.site.register(Editorial)
