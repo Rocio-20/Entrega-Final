@@ -36,11 +36,13 @@
                         </a>
                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                             <a class="dropdown-item" href="{% url 'perfil' %}">Perfil</a>
+                            <a class="dropdown-item" href="{% url 'lista_mensajes' %}">Mensajes</a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="{% url 'logout' %}">Salir</a>
                         </div>
                     </div>
                 {% else %}
+                    <a class="navbar-brand" href="{% url 'registro' %}">Registrarse</a>
                     <a class="navbar-brand" href="{% url 'login' %}">Ingresar</a>
                 {% endif %}
             </div>
@@ -107,7 +109,7 @@
                 <div class="row">
                     <div class="col-lg-6 h-100 text-center text-lg-start my-auto">
                         <ul class="list-inline mb-2">
-                            <li class="list-inline-item"><a href="#!">About</a></li>
+                            <li class="list-inline-item"><a href={% url "about_me" %}>About Me</a></li>
                             <li class="list-inline-item">⋅</li>
                             <li class="list-inline-item"><a href="#!">Contact</a></li>
                             <li class="list-inline-item">⋅</li>

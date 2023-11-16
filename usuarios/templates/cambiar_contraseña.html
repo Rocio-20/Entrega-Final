@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title_head %}
+    <title>Cambiar Contraseña</title>
+{% endblock title_head %}
+
+{% block h1_header %}
+    Cambiar Contraseña
+{% endblock h1_header %}
+
+{% block main %}
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Guardar Cambios</button>
+    </form>
+{% endblock main %}

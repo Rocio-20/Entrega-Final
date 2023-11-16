@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'ckeditor',
     'ckeditor_uploader',
     'usuarios',
+    'mensajeria',
 ]
 CKEDITOR_JQUERY_URL = 'https://code.jquery.com/jquery-3.6.0.min.js'  # Puedes usar tu propia URL de jQuery si prefieres
 CKEDITOR_UPLOAD_PATH = 'uploads/'
@@ -135,7 +136,7 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'inicio','static')]
 
 # Configuración para archivos de medios
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = BASE_DIR / "media"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field

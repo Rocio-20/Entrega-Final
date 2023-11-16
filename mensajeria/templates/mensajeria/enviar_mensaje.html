@@ -1,0 +1,15 @@
+<!-- enviar_mensaje.html -->
+{% extends "base.html" %}
+
+{% block main %}
+    <form method="post" action="{% if receptor_id %}{% url 'enviar_mensaje' receptor_id %}{% endif %}">
+        {% csrf_token %}
+        <label for="id_contenido">Escribe tu mensaje:</label>
+        <textarea id="id_contenido" name="contenido" placeholder="Escribe tu mensaje" required></textarea>
+        <button type="submit">Enviar mensaje</button>
+    </form>
+    {% if error_message %}
+        <p>{{ error_message }}</p>
+    {% endif %}
+{% endblock main %}
+

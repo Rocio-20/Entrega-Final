@@ -1,9 +1,13 @@
 from django.contrib.auth.views import LogoutView
 from django.shortcuts import render, redirect
-from usuarios.forms import RegistroFormulario, EditarPerfil, CrearPerfil
+from usuarios.forms import RegistroFormulario, EditarPerfil, CrearPerfil, CambiarContraseñaFormulario
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from usuarios.models import Usuario
+from django.contrib.auth.views import PasswordChangeView
+from django.urls import reverse_lazy
+from django.utils.decorators import method_decorator
+from django.contrib import messages
 
 def registro(request):
     if request.method == 'POST':
@@ -21,6 +25,7 @@ def registro(request):
         form = RegistroFormulario()
 
     return render(request, 'registro.html', {'form': form})
+   
 @login_required
 def perfil(request):
     usuario = request.user
@@ -37,7 +42,18 @@ def editar_perfil(request):
         form = EditarPerfil(instance=request.user)
 
     return render(request, 'editar_perfil.html', {'form': form})
+  
+@method_decorator(login_required, name='dispatch')
+class cambiar_contraseña(PasswordChangeView):
+    form_class = CambiarContraseñaFormulario
+    template_name = 'cambiar_contraseña.html'
 
+    def form_valid(self, form):
+        messages.success(self.request, 'Contraseña cambiada exitosamente.')
+        return super().form_valid(form)
+    success_url = reverse_lazy('perfil')
+
+    
 def cerrar_sesion(request):
     response = LogoutView.as_view()(request)
     return redirect('inicio')
@@ -54,3 +70,4 @@ def crear_perfil(request):
         form = CrearPerfil()
 
     return render(request, 'crear_perfil.html', {'form': form})
+

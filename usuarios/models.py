@@ -7,4 +7,4 @@ class Usuario(AbstractUser):
     email = models.EmailField(unique=True)
     biografia = models.TextField(blank=True)
     avatar = models.ImageField(upload_to='avatars/', null=True)
-    fecha_de_cumpleanios = models.DateField(null=True, blank=True)
+    fecha_de_nacimiento = models.DateField(null=True, blank=True)

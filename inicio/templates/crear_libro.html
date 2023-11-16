@@ -16,7 +16,7 @@
             </div>
         {% endfor %}
     {% endif %}
-    <form method="post" enctype="multipart/form-data">
+    <form method="post" enctype="multipart/form-data" onsubmit="return validateImageSize(this.portada)">
         {% csrf_token %}
         
         <div>
@@ -58,11 +58,28 @@
             {{ form.portada.label_tag }}
             {{ form.portada }}
             {{ form.portada.errors }}
+            
         </div>
-
+        <div>
+            <p>Creado por: {{ creador.username }}</p>
+        </div>
         <br>
         <button type="submit">Crear Libro</button>
     </form>
 
     {{ form.media }}
 {% endblock main %}
+
+{% block scripts %}
+    <script>
+        function validateImageSize(input) {
+            const maxSizeInBytes = 1024 * 1024;
+            const file = input.files[0];
+
+            if (file && file.size > maxSizeInBytes) {
+                alert('La imagen es demasiado grande. Selecciona una imagen más pequeña.');
+                input.value = '';
+            }
+        }
+    </script>
+{% endblock scripts %}

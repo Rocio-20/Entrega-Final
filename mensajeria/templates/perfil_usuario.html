@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block h1_header %}
+  Perfil de {{ usuario.username }}
+{% endblock h1_header %}
+
+{% block main %}
+  <h2>Información del usuario</h2>
+  <p>Username: {{ usuario.username }}</p>
+  <p>Biografía: {{ usuario.biografia }}</p>
+  
+  <h2>Enviar mensaje</h2>
+  <form method="post" action="{% url 'enviar_mensaje' receptor_id=usuario.id %}">
+      {% csrf_token %}
+      <label for="id_contenido">Escribe tu mensaje:</label>
+      <textarea id="id_contenido" name="contenido" placeholder="Escribe tu mensaje" required></textarea>
+      <button type="submit">Enviar mensaje</button>
+  </form>
+{% endblock main %}

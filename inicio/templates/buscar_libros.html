@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 {% block title_head %}
-    <title>Lista de Libros</title>
+    <title>Buscador de libros</title>
 {% endblock title_head %}
 
 {% block h1_header %}
-    Lista de Libros
+    Buscador de Libros
 {% endblock h1_header %}
 
 {% block main %}
@@ -18,11 +18,9 @@
         <ul>
             {% for libro in lista_libros %}
              <li>
-                <strong>{{ libro.titulo }}</strong><br>
+                <strong><a href="{% url 'detalle_libro' libro.id %}">{{ libro.titulo }}</a></strong><br>
                 Autor: {{ libro.autor }}<br>
                 Editorial: {{ libro.editorial }}<br>
-                <a href="{% url 'editar_libro' libro.id %}">Editar</a>
-                <a href="{% url 'eliminar_libro' libro.id %}">Eliminar</a>
              </li>
             {% endfor %}
         </ul>

@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title_head %}
+    <title>{{ libro.titulo }} - Detalle del Libro</title>
+{% endblock title_head %}
+
+{% block h1_header %}
+    {{ libro.titulo }}
+{% endblock h1_header %}
+
+{% block main %}
+    <!-- Contenido detallado del libro -->
+    <p>Autor: {{ libro.autor }}</p>
+    <p>Editorial: {{ libro.editorial }}</p>
+    <p>Año de Publicación: {{ libro.anio_de_publicacion }}</p>
+    <p>Número de Páginas: {{ libro.hojas }}</p>
+    <p>Descripción: {{ libro.descripcion|safe }}</p>
+    <p>Portada: <img src="{{ libro.portada.url }}" alt="{{ libro.titulo }} Portada"></p>
+    {% if request.user.is_authenticated %}
+        <ul><a href="{% url 'editar_libro' libro.id %}">Editar Libro</a></ul>
+        <ul><a href="{% url 'eliminar_libro' libro.id %}">Eliminar Libro</a></ul>
+    {% endif %}
+    <h3>Reseñas:</h3>
+    {% for resena in libro.resena_set.all %}
+        <p>{{ resena.usuario.username }} puntuación: "{{resena.puntuacion}}"dijo: "{{ resena.comentario }}" en {{ resena.fecha_creacion }}</p>
+    {% empty %}
+        <p>No hay reseñas aún.</p>
+    {% endfor %}
+
+    {% if request.user.is_authenticated %}
+        <a href="{% url 'crear_resena' libro_id=libro.id %}">Crear Reseña</a>
+    {% endif %}
+
+{% endblock main %}

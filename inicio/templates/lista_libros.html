@@ -11,38 +11,9 @@
     <ul>
         {% for libro in libros %}
             <li>
-                <strong>{{ libro.titulo }}</strong><br>
-                Autor: {{ libro.autor }}<br>
-                <button class="expandir-info" data-libro-id="{{ libro.id }}">Ver más</button>
-                <button class="ocultar-info" data-libro-id="{{ libro.id }}" style="display: none;">Ver menos</button>
-                <div class="info-extra" id="info-{{ libro.id }}" style="display: none;">
-                    Editorial: {{ libro.editorial }}<br>
-                    Fecha de Publicación: {{ libro.anio_de_publicacion }}<br>
-                    Descripción: {{ libro.descripcion|safe}}
-                    Número de Páginas: {{ libro.hojas }}<br>
-                    Portada: <img src="{{ libro.portada.url }}" alt="{{ libro.titulo }} Portada"> <br>
-                    <ul><a href="{% url 'editar_libro' libro.id %}">Editar</a></ul>
-                    <ul><a href="{% url 'eliminar_libro' libro.id %}">Eliminar</a></ul>
+                <strong><a href="{% url 'detalle_libro' libro.id %}">{{ libro.titulo }}</a></strong><br>
                 </div>
             </li>
         {% endfor %}
     </ul>
-    <script>
-        document.querySelectorAll('.expandir-info').forEach(function(button) {
-            button.addEventListener('click', function() {
-                var libroId = button.getAttribute('data-libro-id');
-                document.querySelector('.ocultar-info[data-libro-id="' + libroId + '"]').style.display = 'inline';
-                button.style.display = 'none';
-                document.getElementById('info-' + libroId).style.display = 'block';
-            });
-        });
-        document.querySelectorAll('.ocultar-info').forEach(function(button) {
-            button.addEventListener('click', function() {
-                var libroId = button.getAttribute('data-libro-id');
-                document.querySelector('.expandir-info[data-libro-id="' + libroId + '"]').style.display = 'inline';
-                button.style.display = 'none';
-                document.getElementById('info-' + libroId).style.display = 'none';
-            });
-        });
-    </script>
 {% endblock main %}

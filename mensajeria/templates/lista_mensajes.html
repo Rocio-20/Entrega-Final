@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block h1_header %}
+Mensajes Enviados
+{% endblock h1_header %}
+{% block title_head %}
+<title>Mensajes</title>
+{% endblock title_head %}
+
+{% block main %}
+  <h2>Buscar Usuarios</h2>
+  <form method="GET" action="{% url 'buscar_usuarios' %}">
+    <input type="text" name="q" placeholder="Buscar usuarios">
+    <button type="submit">Buscar</button>
+  </form>
+
+<!-- Mostrar resultados de la búsqueda -->
+  {% if resultados_busqueda %}
+    <h4>Resultados de la búsqueda</h4>
+    <ul>
+     {% for usuario in resultados_busqueda %}
+      <li><a href="{% url 'perfil_usuario' usuario_id=usuario.id %}">{{ usuario.username }}</a></li>
+     {% endfor %}
+    </ul>
+  {% endif %}
+  <h2>Mensajes Enviados</h2>
+  {% for mensaje in mensajes_enviados %}
+    <p>{{ mensaje.receptor.username }}: {{ mensaje.contenido }}</p>
+  {% endfor %}
+
+  <h2>Mensajes Recibidos</h2>
+  {% for mensaje in mensajes_recibidos %}
+    <p>
+      {{ mensaje.emisor.username }}: {{ mensaje.contenido }}
+      <a href="{% url 'enviar_mensaje' receptor_id=mensaje.emisor.id %}">Responder</a>
+    </p>
+  {% endfor %}
+
+  <h2>Usuarios con los que has intercambiado mensajes</h2>
+  <ul>
+    {% for usuario in usuarios_intercambio %}
+      <li><a href="{% url 'perfil_usuario' usuario_id=usuario.id %}">{{ usuario.username }}</a></li>
+    {% endfor %}
+  </ul>
+
+{% endblock main %}

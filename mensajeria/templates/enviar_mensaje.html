@@ -1,0 +1,13 @@
+<!-- enviar_mensaje.html -->
+{% extends "base.html" %}
+
+{% block main %}
+  <form method="post" action="{% url 'enviar_mensaje' receptor_id %}">
+      {% csrf_token %}
+      <label for="id_contenido">Escribe tu mensaje:</label>
+      <textarea id="id_contenido" name="contenido" placeholder="Escribe tu mensaje" required></textarea>
+      <input type="hidden" name="respuesta_a" value="{{ mensaje_id }}">
+      <button type="submit">Enviar mensaje</button>
+  </form>
+{% endblock main %}
+

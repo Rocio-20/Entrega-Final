@@ -1,9 +1,16 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from inicio.models import Autor, Editorial, Libro
-from django.contrib import messages
-from inicio.forms import CrearAutorFormulario, BusquedaAutorFormulario, CrearEditorialFormulario, CrearLibroFormulario, BusquedaLibro, EditarLibroFormulario
+from inicio.forms import CrearAutorFormulario, BusquedaAutorFormulario, CrearEditorialFormulario, CrearLibroFormulario, BusquedaLibro, EditarLibroFormulario, ResenaFormulario
 from django.shortcuts import render
+from .mixins import CreatorMixin
+from django.views.generic.edit import CreateView
+from django.urls import reverse_lazy
+from django.contrib.messages.views import SuccessMessageMixin
+from django.contrib.auth.decorators import login_required
 from PIL import Image
+from django.core.files.uploadedfile import InMemoryUploadedFile
+from io import BytesIO
+from django.contrib import messages
 
 def inicio(request):
   return render(request, 'inicio.html', {})
@@ -20,6 +27,7 @@ def autores(request):
 
     return render(request, 'autores.html', {'listado_autores': listado_autores, 'formulario': formulario})
 
+@login_required
 def crear_autor(request):
   if request.method == 'POST':
         formulario = CrearAutorFormulario(request.POST)
@@ -39,8 +47,7 @@ def crear_autor(request):
   formulario = CrearAutorFormulario()
   return render(request, 'crear_autor.html', {'formulario': formulario})
 
-
-
+@login_required
 def crear_editorial(request):
     if request.method == 'POST':
         form = CrearEditorialFormulario(request.POST)
@@ -75,31 +82,43 @@ def buscar_libros(request):
 
     return render(request, 'buscar_libros.html', {'lista_libros': lista_libros, 'formulario': formulario})
 
-def crear_libro(request):
-    if request.method == 'POST':
-        form = CrearLibroFormulario(request.POST, request.FILES)
-        if form.is_valid():
-            libro = form.save()
-            # Procesa la imagen antes de guardarla
-            if libro.portada:
-                img = Image.open(libro.portada.path)
-                img.thumbnail((300, 300))  # Ajusta el tamaño según tus necesidades
-                img.save(libro.portada.path)
+class CrearLibroView(CreatorMixin, SuccessMessageMixin, CreateView):
+    model = Libro
+    form_class = CrearLibroFormulario
+    template_name = 'crear_libro.html'
+    success_url = reverse_lazy('lista_libros')
+    success_message = 'El libro se creó con éxito.'
 
-            libro.save()
-            # Mensaje de creación exitosa
-            messages.success(request, 'El libro se creó con éxito.')
-            # Restablecer los valores del formulario
-            form = CrearLibroFormulario()
-            return redirect('lista_libros')
-        else:
-            messages.error(request, 'Error en el formulario. Por favor, verifica los campos.')
-    else:
-        form = CrearLibroFormulario()
-    
-    print(form.errors)
-    return render(request, 'crear_libro.html', {'form': form})
+    def form_valid(self, form):
+        form.instance.creador = self.request.user
+        portada = form.cleaned_data['portada']
+        if isinstance(portada, InMemoryUploadedFile):
+            # Convierte el archivo en memoria a un objeto Image
+            img = Image.open(portada)
+            
+            # Convierte la imagen a modo RGB si está en modo RGBA
+            if img.mode == 'RGBA':
+                img = img.convert('RGB')
 
+            img.thumbnail((300, 300))  # Ajusta el tamaño según tus necesidades
+
+            # Guarda la imagen redimensionada en un BytesIO
+            output = BytesIO()
+            img.save(output, format='JPEG')
+            output.seek(0)
+
+            # Actualiza el campo de la portada con la nueva imagen
+            form.instance.portada = InMemoryUploadedFile(
+                output,
+                'ImageField',  # Usa 'ImageField' como tipo de archivo
+                f"{portada.name.split('.')[0]}_resized.jpg",  # Nombre del archivo
+                'image/jpeg',
+                output.getbuffer().nbytes,
+                None
+            )
+        return super().form_valid(form)
+
+@login_required
 def editar_libro(request, libro_id):
     libro = get_object_or_404(Libro, id=libro_id)
 
@@ -113,6 +132,7 @@ def editar_libro(request, libro_id):
 
     return render(request, 'editar_libro.html', {'formulario': formulario, 'libro': libro})
 
+@login_required
 def eliminar_libro(request, libro_id):
     libro = get_object_or_404(Libro, id=libro_id)
 
@@ -126,4 +146,28 @@ def lista_libros(request):
     libros = Libro.objects.all()
     return render(request, 'lista_libros.html', {'libros': libros})
 
+def about_me(request):
+    return render(request, 'about_me.html')
 
+@login_required
+def crear_resena(request, libro_id):
+    libro = get_object_or_404(Libro, id=libro_id)
+
+    if request.method == 'POST':
+        formulario = ResenaFormulario(request.POST)
+        if formulario.is_valid():
+            resena = formulario.save(commit=False)
+            resena.usuario = request.user
+            resena.libro = libro
+            resena.save()
+            messages.success(request, 'Reseña creada exitosamente.')
+            return redirect('detalle_libro', libro_id=libro.id)
+    else:
+        formulario = ResenaFormulario()
+
+    return render(request, 'crear_resena.html', {'formulario': formulario, 'libro': libro})
+
+def detalle_libro(request, libro_id):
+    libro = Libro.objects.get(pk=libro_id)
+    reseñas = libro.resena_set.all()
+    return render(request, 'detalle_libro.html', {'libro': libro, 'reseñas': reseñas})

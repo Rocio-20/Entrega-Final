@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title_head %}
+    <title>Crear Reseña</title>
+{% endblock title_head %}
+
+{% block h1_header %}
+    Crear Reseña para {{ libro.titulo }}
+{% endblock h1_header %}
+
+{% block main %}
+    <form method="post">
+        {% csrf_token %}
+        {{ formulario.as_p }}
+        <button type="submit">Enviar Reseña</button>
+    </form>
+{% endblock main %}
