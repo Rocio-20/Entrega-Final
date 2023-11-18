@@ -23,6 +23,7 @@ class EditarPerfil(forms.ModelForm):
         fields = ['nombre', 'apellido', 'email', 'avatar', 'biografia', 'fecha_de_nacimiento']
 
 class CrearPerfil(forms.ModelForm):
+    avatar = forms.ImageField(required=False)
     class Meta:
         model = Usuario
         fields = ['nombre', 'apellido', 'email', 'avatar', 'biografia', 'fecha_de_nacimiento']

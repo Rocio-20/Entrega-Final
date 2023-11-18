@@ -19,7 +19,7 @@ class Libro(models.Model):
     titulo = models.CharField(max_length=200)
     autor = models.ForeignKey(Autor, on_delete=models.CASCADE)
     editorial = models.ForeignKey(Editorial, on_delete=models.CASCADE)
-    anio_de_publicacion = models.DateField()
+    fecha_de_publicacion = models.DateField()
     hojas = models.IntegerField()
     descripcion = RichTextField()
     portada = models.ImageField(upload_to='imagenes_libros/', null=True)

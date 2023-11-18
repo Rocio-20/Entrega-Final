@@ -79,7 +79,6 @@ def buscar_libros(request):
             if titulo_a_buscar:
                 lista_libros = Libro.objects.filter(titulo__icontains=titulo_a_buscar)
             else:
-                # Si el título a buscar es None, podrías querer mostrar todos los libros
                 lista_libros = Libro.objects.all()
 
     else:

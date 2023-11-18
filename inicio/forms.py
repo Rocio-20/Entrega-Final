@@ -17,7 +17,7 @@ class CrearLibroFormulario(forms.ModelForm):
 
     class Meta:
         model = Libro
-        fields = ['titulo', 'autor', 'editorial', 'anio_de_publicacion', 'hojas', 'descripcion', 'portada']
+        fields = ['titulo', 'autor', 'editorial', 'fecha_de_publicacion', 'hojas', 'descripcion', 'portada']
 
     def __init__(self, *args, **kwargs):
         super(CrearLibroFormulario, self).__init__(*args, **kwargs)
@@ -42,7 +42,7 @@ class EditarLibroFormulario(forms.ModelForm):
 
     class Meta:
         model = Libro
-        fields = ['titulo', 'autor', 'editorial', 'anio_de_publicacion', 'hojas', 'descripcion', 'portada']
+        fields = ['titulo', 'autor', 'editorial', 'fecha_de_publicacion', 'hojas', 'descripcion', 'portada']
 
 class ResenaFormulario(forms.ModelForm):
     comentario = RichTextField(blank=True)

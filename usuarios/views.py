@@ -11,18 +11,21 @@ from django.contrib import messages
 
 def registro(request):
     if request.method == 'POST':
-        form = RegistroFormulario(request.POST)
+        form = RegistroFormulario(request.POST, request.FILES)
         if form.is_valid():
             email = form.cleaned_data['email']
             if Usuario.objects.filter(email=email).exists():
-                # Aquí podrías manejar el caso de un usuario ya existente si lo deseas
                 pass
             else:
                 user = form.save()
-                # Autenticar al usuario
                 user = authenticate(request, username=user.username, password=form.cleaned_data['password1'])
-                login(request, user)
-                # Redirigir al usuario después de autenticarse
+                login(request, user)                
+                perfil_form = CrearPerfil(request.POST, request.FILES)
+                if perfil_form.is_valid():
+                    perfil = perfil_form.save(commit=False)
+                    perfil.user = user
+                    perfil.save()
+
                 return redirect('inicio')
     else:
         form = RegistroFormulario()
