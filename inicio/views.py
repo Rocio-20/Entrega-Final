@@ -12,6 +12,9 @@ from django.core.files.uploadedfile import InMemoryUploadedFile
 from io import BytesIO
 from django.contrib import messages
 from django.contrib.auth.decorators import user_passes_test
+from django.urls import reverse
+from django.http import HttpResponseRedirect
+
 
 def inicio(request):
   return render(request, 'inicio.html', {})
@@ -41,7 +44,7 @@ def crear_autor(request):
             autor = Autor(nombre=nombre, nacionalidad = nacionalidad)
             autor.save()
             
-            return redirect('autores')
+            return redirect(reverse('autores'))
         else:
             return render(request, 'crear_autor.html', {'formulario': formulario})
         
@@ -58,6 +61,7 @@ def crear_editorial(request):
             website = info_limpia.get('website')
             editorial = Editorial(nombre=nombre, website = website)
             editorial.save()
+            return redirect(reverse('crear_editorial'))
     
     form = CrearEditorialFormulario()
     listado_editoriales = Editorial.objects.all()
@@ -87,37 +91,38 @@ class CrearLibroView(CreatorMixin, SuccessMessageMixin, CreateView):
     model = Libro
     form_class = CrearLibroFormulario
     template_name = 'crear_libro.html'
-    success_url = reverse_lazy('lista_libros')
     success_message = 'El libro se creó con éxito.'
+    success_url = reverse_lazy('lista_libros')
 
     def form_valid(self, form):
         form.instance.creador = self.request.user
         portada = form.cleaned_data['portada']
         if isinstance(portada, InMemoryUploadedFile):
-            # Convierte el archivo en memoria a un objeto Image
             img = Image.open(portada)
             
-            # Convierte la imagen a modo RGB si está en modo RGBA
             if img.mode == 'RGBA':
                 img = img.convert('RGB')
 
-            img.thumbnail((300, 300))  # Ajusta el tamaño según tus necesidades
+            img.thumbnail((300, 300))  
 
-            # Guarda la imagen redimensionada en un BytesIO
             output = BytesIO()
             img.save(output, format='JPEG')
             output.seek(0)
 
-            # Actualiza el campo de la portada con la nueva imagen
             form.instance.portada = InMemoryUploadedFile(
                 output,
-                'ImageField',  # Usa 'ImageField' como tipo de archivo
-                f"{portada.name.split('.')[0]}_resized.jpg",  # Nombre del archivo
+                'ImageField',  
+                f"{portada.name.split('.')[0]}_resized.jpg", 
                 'image/jpeg',
                 output.getbuffer().nbytes,
                 None
             )
-        return super().form_valid(form)
+
+        response = super().form_valid(form)
+        return response
+    
+    def get_success_url(self):
+        return reverse('lista_libros')
 
 def es_admin(usuario):
     return usuario.is_staff

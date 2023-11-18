@@ -1,7 +1,7 @@
 from django.contrib.auth.views import LogoutView
 from django.shortcuts import render, redirect
 from usuarios.forms import RegistroFormulario, EditarPerfil, CrearPerfil, CambiarContraseñaFormulario
-from django.contrib.auth import login
+from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
 from usuarios.models import Usuario
 from django.contrib.auth.views import PasswordChangeView
@@ -15,11 +15,14 @@ def registro(request):
         if form.is_valid():
             email = form.cleaned_data['email']
             if Usuario.objects.filter(email=email).exists():
-                # Agregar lógica para manejar el caso en que el correo electrónico ya existe
+                # Aquí podrías manejar el caso de un usuario ya existente si lo deseas
                 pass
             else:
                 user = form.save()
+                # Autenticar al usuario
+                user = authenticate(request, username=user.username, password=form.cleaned_data['password1'])
                 login(request, user)
+                # Redirigir al usuario después de autenticarse
                 return redirect('inicio')
     else:
         form = RegistroFormulario()
@@ -68,7 +71,7 @@ def crear_perfil(request):
             perfil = form.save(commit=False)
             perfil.user = request.user
             perfil.save()
-            return redirect('perfil')  # Redirige a la vista de perfil después de crearlo
+            return redirect('perfil')
     else:
         form = CrearPerfil()
 
