@@ -21,7 +21,8 @@ Crear un Libro
 3. Completa el formulario con el título, autor, editorial, año de publicacion, breve descripcion y cantidad de hojas.
 4. Haz clic en "Crear Libro".
 
-Editar y elimar Libro
+Editar y Elimar Libro
+
 Solo quien haya registrado el libro o el admin podran eliminar o editar el libro.
 
 Crear Autor
