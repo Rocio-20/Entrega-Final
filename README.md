@@ -4,6 +4,8 @@ Este es un proyecto de Django que te permite gestionar editoriales, libros, auto
 Puedes crear, ver y editar información relacionada con estas entidades.
 
 FUNCIONALIDADES
+link de video: https://clipchamp.com/watch/rZXvd7zhteN
+
 Crear una Editorial
 1. Ve a la página de inicio.
 2. Haz clic en "Editoriales".
