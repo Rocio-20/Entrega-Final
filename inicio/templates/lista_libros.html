@@ -16,4 +16,10 @@
             </li>
         {% endfor %}
     </ul>
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }}">
+        {{ message }}
+    </div>
+    {% endfor %}
+    <ul><a href="{% url 'libros' %}">Volver a Libros</a></ul>
 {% endblock main %}

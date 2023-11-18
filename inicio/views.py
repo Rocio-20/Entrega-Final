@@ -11,6 +11,7 @@ from PIL import Image
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from io import BytesIO
 from django.contrib import messages
+from django.contrib.auth.decorators import user_passes_test
 
 def inicio(request):
   return render(request, 'inicio.html', {})
@@ -118,26 +119,44 @@ class CrearLibroView(CreatorMixin, SuccessMessageMixin, CreateView):
             )
         return super().form_valid(form)
 
-@login_required
+def es_admin(usuario):
+    return usuario.is_staff
+
+def es_creador_o_admin(user, libro):
+    return user == libro.creador or user.is_staff
+
+@login_required(login_url='libros') 
 def editar_libro(request, libro_id):
     libro = get_object_or_404(Libro, id=libro_id)
+
+    if not es_creador_o_admin(request.user, libro):
+        messages.error(request, 'No tienes permisos para editar este libro.')
+        return redirect('lista_libros')
 
     if request.method == 'POST':
         formulario = EditarLibroFormulario(request.POST, request.FILES, instance=libro)
         if formulario.is_valid():
             formulario.save()
+            messages.success(request, 'Libro editado exitosamente.')
             return redirect('lista_libros')
+        else:
+            messages.error(request, 'Error en el formulario. Por favor, corrige los errores.')
+
     else:
         formulario = EditarLibroFormulario(instance=libro)
 
     return render(request, 'editar_libro.html', {'formulario': formulario, 'libro': libro})
 
-@login_required
+@login_required(login_url='libro')
 def eliminar_libro(request, libro_id):
     libro = get_object_or_404(Libro, id=libro_id)
-
+    if not es_creador_o_admin(request.user, libro):
+        messages.error(request, 'No tienes permisos para eliminar este libro.')
+        return redirect('lista_libros')
+    
     if request.method == 'POST':
         libro.delete()
+        messages.success(request, 'Libro eliminado exitosamente.')
         return redirect('lista_libros')
 
     return render(request, 'eliminar_libro.html', {'libro': libro})

@@ -8,10 +8,15 @@
 {% endblock h1_header %}
 
 {% block main %}
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags }}">
+        {{ message }}
+      </div>
+    {% endfor %}
     <p>Nombre: {{ usuario.nombre }}</p>
     <p>Apellido: {{ usuario.apellido }}</p>
     <p>Email: {{ usuario.email }}</p>
-    <p>Fecha de Cumpleaños: {{ usuario.fecha_de_cumpleanios }}</p>
+    <p>Fecha de Nacimiento: {{ usuario.fecha_de_nacimiento}}</p>
     <p>Biografía: {{ usuario.biografia }}</p>
     
     <ul><a href="{% url 'editar_perfil' %}">Editar</a></ul>
