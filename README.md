@@ -4,8 +4,9 @@ Este es un proyecto de Django que te permite gestionar editoriales, libros, auto
 Puedes crear, ver y editar información relacionada con estas entidades.
 
 FUNCIONALIDADES
-link de video: https://clipchamp.com/watch/rZXvd7zhteN
-link drive: https://drive.google.com/file/d/1bFWgapr2gisOmdTp1An1FkIHlDnr1_0P/view?usp=drive_link
+Link de video: https://clipchamp.com/watch/rZXvd7zhteN
+
+Link drive: https://drive.google.com/file/d/1bFWgapr2gisOmdTp1An1FkIHlDnr1_0P/view?usp=drive_link
 
 Crear una Editorial
 1. Ve a la página de inicio.
